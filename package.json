@@ -1,0 +1,54 @@
+{
+  "name": "geotap-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for GeoTap — access 28+ US federal environmental and infrastructure data sources from Claude, Cursor, and other AI tools",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "geotap-mcp": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "geospatial",
+    "environmental-data",
+    "flood-zones",
+    "wetlands",
+    "soil-data",
+    "rainfall",
+    "hydrology",
+    "watershed",
+    "fema",
+    "usgs",
+    "epa",
+    "noaa",
+    "gis",
+    "site-analysis",
+    "environmental-assessment",
+    "stormwater",
+    "curve-number",
+    "land-use",
+    "climate",
+    "water-quality",
+    "infrastructure",
+    "ai-tools",
+    "claude",
+    "cursor"
+  ],
+  "author": "GeoTap",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jcholly/geotap-mcp-server"
+  }
+}
