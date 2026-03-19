@@ -840,7 +840,7 @@ export const tools = [
     name: 'export_data',
     description: `Export environmental data layers to common GIS formats (GeoJSON, Shapefile, KML, CSV, GeoPackage). Supports CRS transformation, feature clipping to AOI, and raster inclusion (DEM, satellite, NLCD). Use this tool when someone needs to download data for use in GIS software, CAD, or other analysis tools.`,
     parameters: {
-      layers: z.array(z.string()).optional().describe('Layer names to export'),
+      layers: z.array(z.string()).describe('Layer names to export (required). Use list_data_layers to see available names.'),
       format: z.enum(['geojson', 'shapefile', 'kml', 'csv', 'geopackage']).describe('Output format'),
       crs: z.string().optional().describe('Target coordinate reference system (e.g., "EPSG:4326")'),
       geometry: z.any().optional().describe('GeoJSON geometry to clip export area'),
