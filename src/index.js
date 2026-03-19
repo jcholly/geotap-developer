@@ -5,6 +5,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import { tools } from './tools.js';
 import { callApi } from './api.js';
+import { toolSources } from './sources.js';
 
 const server = new McpServer({
   name: 'geotap',
@@ -21,8 +22,20 @@ for (const tool of tools) {
     async (params) => {
       try {
         const result = await callApi(tool.endpoint, tool.method, params);
+
+        // Enrich response with source attribution and data freshness
+        const sources = toolSources[tool.name] || [];
+        const enriched = {
+          ...result,
+          _meta: {
+            sources,
+            retrievedAt: new Date().toISOString(),
+            disclaimer: 'Data sourced from US federal agencies via GeoTap. Always verify critical data against authoritative sources before making engineering or regulatory decisions.',
+          }
+        };
+
         return {
-          content: [{ type: 'text', text: JSON.stringify(result, null, 2) }]
+          content: [{ type: 'text', text: JSON.stringify(enriched, null, 2) }]
         };
       } catch (error) {
         return {
