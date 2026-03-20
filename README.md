@@ -131,18 +131,54 @@ Every response includes:
 curl "https://geotapdata.com/api/v1/geocode?address=456+Oak+Ave+Houston+TX"
 ```
 
+#### Quick Start: Query an Address (Recommended)
+
+The fastest way to get environmental data — geocode + query in one call:
+
+```bash
+# One call: geocodes address + returns flood zone, soils, wetlands, contamination
+curl "https://geotapdata.com/api/v1/query-address?address=123+Main+St+Houston+TX"
+
+# With specific layers
+curl "https://geotapdata.com/api/v1/query-address?address=123+Main+St+Houston+TX&layers=flood_zones,soil_map_units"
+```
+
+Response includes plain-English `_interpretation` fields:
+```json
+{
+  "properties": {
+    "zone": "AE",
+    "_interpretation": "High-risk flood zone with base flood elevations determined. Flood insurance required."
+  }
+}
+```
+
+#### Point Query (by coordinates)
+
+```bash
+# What's at this exact point? (properties only, no geometry — always <5KB)
+curl "https://geotapdata.com/api/v1/spatial/point?lat=30.267&lng=-97.743&layers=flood_zones,wetlands"
+```
+
 #### Spatial Queries
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/spatial/near?lat={lat}&lng={lng}&radius={km}` | Query all layers near a point |
-| POST | `/spatial/in-polygon` | Query all layers within a polygon |
+| GET | `/query-address?address=...` | **Geocode + point query in one call (recommended)** |
+| GET | `/spatial/point?lat=...&lng=...` | Point-in-polygon query (properties only, with interpretations) |
+| GET | `/spatial/near?lat={lat}&lng={lng}&radius={km}` | Query layers near a point |
+| POST | `/spatial/in-polygon` | Query layers within a polygon |
 | POST | `/spatial/summary` | Feature counts per layer (fast) |
 | GET | `/spatial/bbox?bbox={w,s,e,n}` | Query layers in a bounding box |
 
+**`geometry` parameter** — available on `/near`, `/bbox`, `/in-polygon`, and `/layers/:name/features`:
+- `geometry=none` — strips all coordinates (smallest response, best for LLM consumers)
+- `geometry=simplified` — reduces coordinate density
+- `geometry=full` — complete geometry (default)
+
 ```bash
-# All environmental data within 0.5 km of a point
-curl "https://geotapdata.com/api/v1/spatial/near?lat=34.05&lng=-118.25&radius=0.5"
+# All environmental data within 0.5 km of a point (no geometry for smaller response)
+curl "https://geotapdata.com/api/v1/spatial/near?lat=34.05&lng=-118.25&radius=0.5&geometry=none"
 
 # Specific layers only
 curl "https://geotapdata.com/api/v1/spatial/near?lat=34.05&lng=-118.25&radius=0.5&layers=flood_zones,wetlands,soil_map_units"
@@ -154,7 +190,8 @@ curl -X POST "https://geotapdata.com/api/v1/spatial/in-polygon" \
     "polygon": {
       "type": "Polygon",
       "coordinates": [[[-97.75,30.26],[-97.74,30.26],[-97.74,30.27],[-97.75,30.27],[-97.75,30.26]]]
-    }
+    },
+    "geometry": "none"
   }'
 ```
 
@@ -492,15 +529,24 @@ With API key:
 - *"What permits do I need to build near this stream?"*
 - *"Export this data as a shapefile"*
 
-### Available Tools (83)
+### Available Tools (85)
+
+**Core tools (start here):**
+- **query_address** — Geocode + environmental query in one call. Returns properties with plain-English interpretations. (<5KB response)
+- **identify_features_at_point** — Same as above but for lat/lng coordinates
+- **get_rainfall_data** — NOAA Atlas 14 precipitation data
+- **get_environmental_summary** — Quick feature counts per layer
+- **geocode_address** — Convert address to coordinates
 
 <details>
-<summary>Spatial Queries (4)</summary>
+<summary>All Spatial Queries (6)</summary>
 
-- **get_environmental_data_for_area** — Query all 28+ data sources within a polygon
-- **get_environmental_data_near_point** — Query all data sources near a lat/lng point
+- **query_address** — Geocode + point query in one call (recommended starting tool)
+- **identify_features_at_point** — Point-in-polygon query (properties only, no geometry)
+- **get_environmental_data_for_area** — Query all 28+ data sources within a polygon (supports geometry=none)
+- **get_environmental_data_near_point** — Query all data sources near a lat/lng point (supports geometry=none)
 - **get_environmental_summary** — Quick feature counts per layer for an area
-- **get_environmental_data_in_bbox** — Query data within a bounding box
+- **get_environmental_data_in_bbox** — Query data within a bounding box (supports geometry=none)
 </details>
 
 <details>
