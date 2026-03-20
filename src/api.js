@@ -1,4 +1,4 @@
-const BASE_URL = process.env.GEOTAP_API_URL || 'https://geotap.us/api/v1';
+const BASE_URL = process.env.GEOTAP_API_URL || 'https://geotapdata.com/api/v1';
 const API_KEY = process.env.GEOTAP_API_KEY || '';
 
 /**

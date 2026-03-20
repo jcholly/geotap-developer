@@ -7,7 +7,7 @@ GeoTap aggregates data from FEMA, USGS, EPA, NOAA, USDA, USFWS, DOT, Census, and
 - **REST API documentation** — query federal data programmatically
 - **MCP Server** — connect GeoTap to Claude, Cursor, Windsurf, and other AI tools
 
-> **Web App**: [geotap.us](https://geotap.us) — no code required, draw on a map and explore data visually.
+> **Web App**: [geotapdata.com](https://geotapdata.com) — no code required, draw on a map and explore data visually.
 
 ---
 
@@ -37,13 +37,13 @@ Every API response includes **source attribution** — the federal agency, datas
 
 ```bash
 # Get flood zones, wetlands, soils, and 16 more layers for a location
-curl "https://geotap.us/api/v1/spatial/near?lat=30.267&lng=-97.743&radius=0.5"
+curl "https://geotapdata.com/api/v1/spatial/near?lat=30.267&lng=-97.743&radius=0.5"
 
 # Get NOAA Atlas 14 rainfall data
-curl "https://geotap.us/api/v1/rainfall/atlas14?lat=30.267&lon=-97.743"
+curl "https://geotapdata.com/api/v1/rainfall/atlas14?lat=30.267&lon=-97.743"
 
 # Geocode an address
-curl "https://geotap.us/api/v1/geocode?address=123+Main+St+Austin+TX"
+curl "https://geotapdata.com/api/v1/geocode?address=123+Main+St+Austin+TX"
 ```
 
 ### Option 2: MCP Server (for AI tools)
@@ -66,7 +66,7 @@ Then ask: *"What are the flood zones at 123 Main St, Austin TX?"*
 
 ## REST API Reference
 
-**Base URL**: `https://geotap.us/api/v1`
+**Base URL**: `https://geotapdata.com/api/v1`
 
 ### Authentication
 
@@ -76,7 +76,7 @@ API keys are **optional** during the open beta. All endpoints work without authe
 |--------|---------|
 | **Header** | `X-API-Key: your-key-here` |
 | **Query param** | `?api_key=your-key-here` |
-| **Register** | `POST https://geotap.us/api/keys/register` with `{"email": "you@example.com"}` |
+| **Register** | `POST https://geotapdata.com/api/keys/register` with `{"email": "you@example.com"}` |
 
 Authenticated requests get higher rate limits and usage tracking.
 
@@ -125,7 +125,7 @@ Every response includes:
 | GET | `/geocode?address={address}` | Convert a US address to coordinates |
 
 ```bash
-curl "https://geotap.us/api/v1/geocode?address=456+Oak+Ave+Houston+TX"
+curl "https://geotapdata.com/api/v1/geocode?address=456+Oak+Ave+Houston+TX"
 ```
 
 #### Spatial Queries
@@ -139,13 +139,13 @@ curl "https://geotap.us/api/v1/geocode?address=456+Oak+Ave+Houston+TX"
 
 ```bash
 # All environmental data within 0.5 km of a point
-curl "https://geotap.us/api/v1/spatial/near?lat=34.05&lng=-118.25&radius=0.5"
+curl "https://geotapdata.com/api/v1/spatial/near?lat=34.05&lng=-118.25&radius=0.5"
 
 # Specific layers only
-curl "https://geotap.us/api/v1/spatial/near?lat=34.05&lng=-118.25&radius=0.5&layers=flood_zones,wetlands,soil_map_units"
+curl "https://geotapdata.com/api/v1/spatial/near?lat=34.05&lng=-118.25&radius=0.5&layers=flood_zones,wetlands,soil_map_units"
 
 # Query within a polygon
-curl -X POST "https://geotap.us/api/v1/spatial/in-polygon" \
+curl -X POST "https://geotapdata.com/api/v1/spatial/in-polygon" \
   -H "Content-Type: application/json" \
   -d '{
     "polygon": {
@@ -184,10 +184,10 @@ curl -X POST "https://geotap.us/api/v1/spatial/in-polygon" \
 
 ```bash
 # Atlas 14 rainfall for all durations and return periods
-curl "https://geotap.us/api/v1/rainfall/atlas14?lat=32.78&lon=-96.80"
+curl "https://geotapdata.com/api/v1/rainfall/atlas14?lat=32.78&lon=-96.80"
 
 # Generate a 25-year, 24-hour design storm hyetograph
-curl -X POST "https://geotap.us/api/v1/rainfall/hyetograph" \
+curl -X POST "https://geotapdata.com/api/v1/rainfall/hyetograph" \
   -H "Content-Type: application/json" \
   -d '{
     "latitude": 32.78,
@@ -199,7 +199,7 @@ curl -X POST "https://geotap.us/api/v1/rainfall/hyetograph" \
   }'
 
 # Climate-adjusted rainfall projection
-curl -X POST "https://geotap.us/api/v1/rainfall/climate/project" \
+curl -X POST "https://geotapdata.com/api/v1/rainfall/climate/project" \
   -H "Content-Type: application/json" \
   -d '{
     "latitude": 32.78,
@@ -223,7 +223,7 @@ curl -X POST "https://geotap.us/api/v1/rainfall/climate/project" \
 
 ```bash
 # Delineate watershed from a pour point
-curl -X POST "https://geotap.us/api/v1/watershed/delineate" \
+curl -X POST "https://geotapdata.com/api/v1/watershed/delineate" \
   -H "Content-Type: application/json" \
   -d '{"lat": 36.12, "lng": -97.06}'
 ```
@@ -246,10 +246,10 @@ curl -X POST "https://geotap.us/api/v1/watershed/delineate" \
 
 ```bash
 # Lookup curve number for developed land on B soils
-curl "https://geotap.us/api/v1/cn/lookup?nlcd=22&hsg=B"
+curl "https://geotapdata.com/api/v1/cn/lookup?nlcd=22&hsg=B"
 
 # Calculate weighted CN for a catchment
-curl -X POST "https://geotap.us/api/v1/cn/analyze" \
+curl -X POST "https://geotapdata.com/api/v1/cn/analyze" \
   -H "Content-Type: application/json" \
   -d '{"catchments": {"type": "FeatureCollection", "features": [...]}}'
 ```
@@ -315,13 +315,13 @@ curl -X POST "https://geotap.us/api/v1/cn/analyze" \
 
 ```bash
 # Flood frequency at USGS gage 08158000 (Colorado River at Austin)
-curl "https://geotap.us/api/v1/gage-intelligence/08158000/flood-frequency"
+curl "https://geotapdata.com/api/v1/gage-intelligence/08158000/flood-frequency"
 
 # 7Q10 low flow for NPDES permits
-curl "https://geotap.us/api/v1/gage-intelligence/08158000/low-flow"
+curl "https://geotapdata.com/api/v1/gage-intelligence/08158000/low-flow"
 
 # Estimate flood frequency at an ungaged site
-curl -X POST "https://geotap.us/api/v1/gage-intelligence/ungaged/estimate" \
+curl -X POST "https://geotapdata.com/api/v1/gage-intelligence/ungaged/estimate" \
   -H "Content-Type: application/json" \
   -d '{"state": "TX", "region": "4", "parameters": {"drainageArea": 10.5}}'
 ```
@@ -358,7 +358,7 @@ curl -X POST "https://geotap.us/api/v1/gage-intelligence/ungaged/estimate" \
 
 ```bash
 # Generate a full site analysis
-curl -X POST "https://geotap.us/api/v1/site-analysis/report" \
+curl -X POST "https://geotapdata.com/api/v1/site-analysis/report" \
   -H "Content-Type: application/json" \
   -d '{
     "geometry": {"type": "Point", "coordinates": [-97.74, 30.27]},
@@ -366,7 +366,7 @@ curl -X POST "https://geotap.us/api/v1/site-analysis/report" \
   }'
 
 # Check status (reports take 30-60 seconds)
-curl "https://geotap.us/api/v1/site-analysis/report/{jobId}"
+curl "https://geotapdata.com/api/v1/site-analysis/report/{jobId}"
 ```
 
 #### Export
@@ -380,7 +380,7 @@ curl "https://geotap.us/api/v1/site-analysis/report/{jobId}"
 
 ```bash
 # Export flood zones and wetlands as a shapefile
-curl -X POST "https://geotap.us/api/v1/export" \
+curl -X POST "https://geotapdata.com/api/v1/export" \
   -H "Content-Type: application/json" \
   -d '{
     "layers": ["flood_zones", "wetlands"],
@@ -454,7 +454,7 @@ geotap-mcp
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `GEOTAP_API_URL` | API base URL | `https://geotap.us/api/v1` |
+| `GEOTAP_API_URL` | API base URL | `https://geotapdata.com/api/v1` |
 | `GEOTAP_API_KEY` | Optional API key | (none — free tier) |
 
 With API key:
@@ -751,7 +751,7 @@ MIT
 
 ## Links
 
-- **Web App**: [geotap.us](https://geotap.us)
-- **API Docs (JSON)**: [geotap.us/api/v1/docs](https://geotap.us/api/v1/docs)
+- **Web App**: [geotapdata.com](https://geotapdata.com)
+- **API Docs (JSON)**: [geotapdata.com/api/v1/docs](https://geotapdata.com/api/v1/docs)
 - **Issues**: [GitHub Issues](https://github.com/jcholly/geotap-developer/issues)
 - **npm**: [geotap-mcp-server](https://www.npmjs.com/package/geotap-mcp-server)
