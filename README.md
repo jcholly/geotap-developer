@@ -1,5 +1,8 @@
 # GeoTap Developer
 
+[![npm version](https://img.shields.io/npm/v/geotap-mcp-server.svg)](https://www.npmjs.com/package/geotap-mcp-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **One API for 28+ US federal environmental and infrastructure data sources.**
 
 GeoTap aggregates data from FEMA, USGS, EPA, NOAA, USDA, USFWS, DOT, Census, and more into a single REST API. This repository contains:
