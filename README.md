@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/geotap-mcp-server.svg)](https://www.npmjs.com/package/geotap-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**One API for 28+ US federal environmental and infrastructure data sources.**
+**One API for 37 US federal environmental and infrastructure data sources.**
 
 GeoTap aggregates data from FEMA, USGS, EPA, NOAA, USDA, USFWS, DOT, Census, and more into a single REST API. This repository contains:
 
@@ -543,7 +543,7 @@ With API key:
 
 - **query_address** — Geocode + point query in one call (recommended starting tool)
 - **identify_features_at_point** — Point-in-polygon query (properties only, no geometry)
-- **get_environmental_data_for_area** — Query all 28+ data sources within a polygon (supports geometry=none)
+- **get_environmental_data_for_area** — Query all 37 data sources within a polygon (supports geometry=none)
 - **get_environmental_data_near_point** — Query all data sources near a lat/lng point (supports geometry=none)
 - **get_environmental_summary** — Quick feature counts per layer for an area
 - **get_environmental_data_in_bbox** — Query data within a bounding box (supports geometry=none)
@@ -552,7 +552,7 @@ With API key:
 <details>
 <summary>Data Layers (3)</summary>
 
-- **list_data_layers** — List all 28+ available data sources
+- **list_data_layers** — List all 37 available data sources
 - **get_layer_details** — Get metadata about a specific layer
 - **get_layer_features** — Get features from a specific data layer
 </details>
@@ -733,7 +733,7 @@ With API key:
 - Water quality impairment assessment (EPA ATTAINS 303(d) list)
 
 ### AI-Powered Research
-- Natural language queries across 28+ federal databases
+- Natural language queries across 37 federal databases
 - Automated environmental screening reports
 - Cross-agency data correlation and analysis
 

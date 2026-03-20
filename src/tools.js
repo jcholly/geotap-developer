@@ -40,7 +40,7 @@ export const tools = [
   },
   {
     name: 'get_environmental_data_for_area',
-    description: `Query all available US federal environmental and infrastructure data within a geographic area (polygon). Returns features from 28+ data sources. WARNING: responses can be very large (100KB-2MB+) in urban areas with full geometry. ALWAYS set geometry="none" unless the user specifically needs coordinates. Specify layers to reduce response size. For simple "what's at this location?" questions, use query_address or identify_features_at_point instead — they're faster and return <5KB.`,
+    description: `Query all available US federal environmental and infrastructure data within a geographic area (polygon). Returns features from 37 data sources. WARNING: responses can be very large (100KB-2MB+) in urban areas with full geometry. ALWAYS set geometry="none" unless the user specifically needs coordinates. Specify layers to reduce response size. For simple "what's at this location?" questions, use query_address or identify_features_at_point instead — they're faster and return <5KB.`,
     parameters: {
       polygon: z.object({
         type: z.literal('Polygon'),
@@ -95,7 +95,7 @@ export const tools = [
   // ═══════════════════════════════════════════════════════════════════
   {
     name: 'list_data_layers',
-    description: `List all available environmental and infrastructure data layers in GeoTap. Returns the full catalog of 28+ data sources with their names, descriptions, and data providers. Use this tool when someone asks "what data do you have?" or "what sources are available?" or wants to know what types of environmental data can be queried. Includes layers from FEMA, USGS, EPA, NOAA, USDA, USFWS, DOT, Census, and more.`,
+    description: `List all available environmental and infrastructure data layers in GeoTap. Returns the full catalog of 37 data sources with their names, descriptions, and data providers. Use this tool when someone asks "what data do you have?" or "what sources are available?" or wants to know what types of environmental data can be queried. Includes layers from FEMA, USGS, EPA, NOAA, USDA, USFWS, DOT, Census, and more.`,
     parameters: {},
     endpoint: '/layers',
     method: 'GET'

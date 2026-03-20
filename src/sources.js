@@ -71,8 +71,8 @@ export const toolSources = {
   get_environmental_data_in_bbox: MULTI_SOURCE,
 
   // ── Data Layers ──
-  list_data_layers: [{ agency: 'GeoTap', dataset: 'Layer Catalog (28+ federal sources)', url: 'https://geotap.us' }],
-  get_layer_details: [{ agency: 'GeoTap', dataset: 'Layer Catalog', url: 'https://geotap.us' }],
+  list_data_layers: [{ agency: 'GeoTap', dataset: 'Layer Catalog (37 federal sources)', url: 'https://geotapdata.com' }],
+  get_layer_details: [{ agency: 'GeoTap', dataset: 'Layer Catalog', url: 'https://geotapdata.com' }],
   get_layer_features: MULTI_SOURCE,
 
   // ── Rainfall & Precipitation ──
@@ -141,7 +141,7 @@ export const toolSources = {
   // ── Monitoring Stations ──
   find_monitoring_stations: [...src(AGENCIES.USGS, 'nwis'), { agency: 'NOAA', dataset: 'Tide Stations, Weather Stations', url: 'https://tidesandcurrents.noaa.gov/' }],
   search_stations: [...src(AGENCIES.USGS, 'nwis'), { agency: 'NOAA', dataset: 'Tide Stations, Weather Stations', url: 'https://tidesandcurrents.noaa.gov/' }],
-  get_station_types: [{ agency: 'GeoTap', dataset: 'Station Type Configuration', url: 'https://geotap.us' }],
+  get_station_types: [{ agency: 'GeoTap', dataset: 'Station Type Configuration', url: 'https://geotapdata.com' }],
 
   // ── Gage Intelligence: Gauged ──
   get_flood_frequency_analysis: [...src(AGENCIES.USGS, 'nwis'), { agency: 'USGS', dataset: 'Bulletin 17C Guidelines', url: 'https://pubs.usgs.gov/tm/04/b05/tm4b5.pdf' }],
@@ -171,22 +171,22 @@ export const toolSources = {
   get_site_analysis_status: MULTI_SOURCE,
   generate_constraints_report: MULTI_SOURCE,
   get_constraints_report_status: MULTI_SOURCE,
-  get_constraints_config: [{ agency: 'GeoTap', dataset: 'Constraints Configuration', url: 'https://geotap.us' }],
+  get_constraints_config: [{ agency: 'GeoTap', dataset: 'Constraints Configuration', url: 'https://geotapdata.com' }],
   generate_developability_report: MULTI_SOURCE,
-  get_developability_config: [{ agency: 'GeoTap', dataset: 'Developability Configuration', url: 'https://geotap.us' }],
+  get_developability_config: [{ agency: 'GeoTap', dataset: 'Developability Configuration', url: 'https://geotapdata.com' }],
 
   // ── Export ──
-  get_export_options: [{ agency: 'GeoTap', dataset: 'Export Configuration', url: 'https://geotap.us' }],
+  get_export_options: [{ agency: 'GeoTap', dataset: 'Export Configuration', url: 'https://geotapdata.com' }],
   export_data: MULTI_SOURCE,
-  get_export_status: [{ agency: 'GeoTap', dataset: 'Export Job Status', url: 'https://geotap.us' }],
+  get_export_status: [{ agency: 'GeoTap', dataset: 'Export Job Status', url: 'https://geotapdata.com' }],
 
   // ── Utilities ──
   geocode_address: [
     { agency: 'Census Bureau', dataset: 'Census Geocoder', url: 'https://geocoding.geo.census.gov/' },
     { agency: 'OpenStreetMap', dataset: 'Photon / Nominatim Geocoder', url: 'https://photon.komoot.io/' },
   ],
-  check_api_status: [{ agency: 'GeoTap', dataset: 'API Health Check', url: 'https://geotap.us' }],
-  check_specific_api_status: [{ agency: 'GeoTap', dataset: 'API Health Check', url: 'https://geotap.us' }],
+  check_api_status: [{ agency: 'GeoTap', dataset: 'API Health Check', url: 'https://geotapdata.com' }],
+  check_specific_api_status: [{ agency: 'GeoTap', dataset: 'API Health Check', url: 'https://geotapdata.com' }],
   get_firm_panels: src(AGENCIES.FEMA, 'nfhl'),
   get_huc_watersheds: src(AGENCIES.USGS, 'wbd'),
   get_huc_watershed_by_code: src(AGENCIES.USGS, 'wbd'),

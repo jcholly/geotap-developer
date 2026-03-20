@@ -10,8 +10,8 @@ import { toolSources } from './sources.js';
 const server = new McpServer({
   name: 'geotap',
   version: '1.2.0',
-  description: 'Access 28+ US federal environmental and infrastructure data sources. Query flood zones, wetlands, soils, rainfall, watersheds, water quality, endangered species, elevation, land use, and more for any location in the United States.',
-  instructions: `You have access to GeoTap, which provides real-time data from 28+ US federal agencies (FEMA, USGS, NOAA, EPA, NRCS, USFWS, USACE, and more).
+  description: 'Access 37 US federal environmental and infrastructure data sources. Query flood zones, wetlands, soils, rainfall, watersheds, water quality, endangered species, elevation, land use, and more for any location in the United States.',
+  instructions: `You have access to GeoTap, which provides real-time data from 37 US federal agencies (FEMA, USGS, NOAA, EPA, NRCS, USFWS, USACE, and more).
 
 START HERE — CORE TOOLS (use these for 90% of queries):
 1. query_address — Geocode + environmental lookup in ONE call. Always start here when user gives an address.
