@@ -9,21 +9,22 @@ import { toolSources } from './sources.js';
 
 const server = new McpServer({
   name: 'geotap',
-  version: '1.0.0',
+  version: '1.1.0',
   description: 'Access 28+ US federal environmental and infrastructure data sources. Query flood zones, wetlands, soils, rainfall, watersheds, water quality, endangered species, elevation, land use, and more for any location in the United States.',
   instructions: `You have access to GeoTap, which provides real-time data from 28+ US federal agencies (FEMA, USGS, NOAA, EPA, NRCS, USFWS, USACE, and more).
 
 HOW TO USE THESE TOOLS:
 - For any US location question, start with geocode_address if the user gives an address (not coordinates).
+- For "what flood zone / soil type / wetland is at this location?" use identify_features_at_point — it returns only properties (no geometry), so responses are tiny and fast.
+- For "what's near this location?" use get_environmental_data_near_point with geometry=none to avoid large responses.
 - Most tools accept lat/lon (or lat/lng). Use WGS84 decimal degrees.
+- Use the geometry parameter ("none", "simplified", "full") to control response size. Default is "full" which includes all coordinates. Use "none" when you only need properties.
 - Combine multiple tools to build a complete picture. For example, to assess a site:
   1. geocode_address → get coordinates
-  2. get_flood_zones → FEMA flood risk
-  3. get_wetlands → USFWS wetland boundaries
-  4. get_soils → NRCS soil type, drainage, hydric rating
-  5. get_rainfall_atlas14 → NOAA precipitation data
-  6. get_stations_near → nearby USGS/NOAA monitoring stations
-  7. get_water_quality_impairments → EPA impaired waterways
+  2. identify_features_at_point → flood zone, soil type, wetlands, contamination at the exact point
+  3. get_rainfall_atlas14 → NOAA precipitation data
+  4. get_stations_near → nearby USGS/NOAA monitoring stations
+  5. get_water_quality_impairments → EPA impaired waterways
 
 COMMON WORKFLOWS:
 - "Is this a good place to build?" → flood zones + wetlands + soils + constraints

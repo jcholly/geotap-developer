@@ -18,6 +18,17 @@ export const tools = [
   // SPATIAL QUERIES — Query environmental data by geography
   // ═══════════════════════════════════════════════════════════════════
   {
+    name: 'identify_features_at_point',
+    description: `Identify what environmental features exist at an exact point. Returns ONLY the properties (no geometry coordinates) of features that contain or intersect the point. This is the fastest, most token-efficient way to answer "what flood zone is this address in?", "what soil type is here?", or "are there wetlands at this location?". ALWAYS prefer this tool over get_environmental_data_near_point when the user asks about a specific location rather than an area. Returns results from key regulatory layers: flood zones, wetlands, soils, critical habitat, protected lands, brownfields, Superfund, NPDES outfalls, and sole source aquifers.`,
+    parameters: {
+      lat: z.number().describe('Latitude (WGS84)'),
+      lng: z.number().describe('Longitude (WGS84)'),
+      layers: z.string().optional().describe('Comma-separated layer names (e.g., "flood_zones,wetlands,soil_map_units"). Defaults to key regulatory layers.')
+    },
+    endpoint: '/spatial/point',
+    method: 'GET'
+  },
+  {
     name: 'get_environmental_data_for_area',
     description: `Query all available US federal environmental and infrastructure data within a geographic area (polygon). Returns features from 28+ data sources including FEMA flood zones, NWI wetlands, USDA soils, USGS geology, EPA sites (Superfund, brownfields, TRI), USFWS critical habitat, DOT bridges, power plants, dams, mines, and more. Use this tool when someone asks about environmental conditions, site constraints, development feasibility, or regulatory concerns for a specific area. Accepts a GeoJSON polygon (e.g., a property boundary, project site, or any area of interest). This is the most comprehensive tool — it returns everything available for the given area.`,
     parameters: {
@@ -25,19 +36,21 @@ export const tools = [
         type: z.literal('Polygon'),
         coordinates: z.array(z.array(z.array(z.number())))
       }).describe('GeoJSON Polygon geometry defining the area of interest'),
-      layers: z.array(z.string()).optional().describe('Optional array of specific layer names to query. If omitted, all layers are queried.')
+      layers: z.array(z.string()).optional().describe('Optional array of specific layer names to query. If omitted, all layers are queried.'),
+      geometry: z.enum(['none', 'simplified', 'full']).optional().describe('Geometry detail: "none" strips coordinates (smallest response), "simplified" reduces density, "full" returns complete geometry. Default: full. Use "none" when you only need properties.')
     },
     endpoint: '/spatial/in-polygon',
     method: 'POST'
   },
   {
     name: 'get_environmental_data_near_point',
-    description: `Query all available US federal environmental and infrastructure data near a specific point (latitude/longitude). Returns features within a given radius from 28+ data sources including FEMA flood zones, NWI wetlands, USDA soils, USGS geology, EPA sites, endangered species habitat, bridges, dams, and more. Use this tool when someone asks "what's near this location?" or provides an address/coordinates and wants to know about environmental conditions in the vicinity. Great for quick site screening.`,
+    description: `Query all available US federal environmental and infrastructure data near a specific point (latitude/longitude). Returns features within a given radius from 28+ data sources including FEMA flood zones, NWI wetlands, USDA soils, USGS geology, EPA sites, endangered species habitat, bridges, dams, and more. Use this tool when someone asks "what's near this location?" or provides an address/coordinates and wants to know about environmental conditions in the vicinity. Great for quick site screening. For "what flood zone is THIS point in?" use identify_features_at_point instead — it's faster and returns much smaller responses.`,
     parameters: {
       lat: z.number().describe('Latitude of the center point (WGS84)'),
       lng: z.number().describe('Longitude of the center point (WGS84)'),
-      radius: z.number().optional().describe('Search radius in kilometers (default: 1)'),
-      layers: z.string().optional().describe('Comma-separated layer names to query. If omitted, all layers are queried.')
+      radius: z.number().optional().describe('Search radius in kilometers (min: 0.01, default: 1)'),
+      layers: z.string().optional().describe('Comma-separated layer names to query. If omitted, all layers are queried.'),
+      geometry: z.enum(['none', 'simplified', 'full']).optional().describe('Geometry detail: "none" strips coordinates (smallest response), "simplified" reduces density, "full" returns complete geometry. Default: full. Use "none" when you only need properties.')
     },
     endpoint: '/spatial/near',
     method: 'GET'
@@ -60,7 +73,8 @@ export const tools = [
     description: `Query environmental data within a bounding box. Simpler than polygon query — just provide west, south, east, north coordinates. Returns features from specified layers. Good for quick rectangular area searches when you don't have an exact polygon boundary.`,
     parameters: {
       bbox: z.string().describe('Bounding box as "west,south,east,north" in WGS84 coordinates'),
-      layers: z.string().optional().describe('Comma-separated layer names to query')
+      layers: z.string().optional().describe('Comma-separated layer names to query'),
+      geometry: z.enum(['none', 'simplified', 'full']).optional().describe('Geometry detail: "none" strips coordinates (smallest response), "simplified" reduces density, "full" returns complete geometry. Default: full.')
     },
     endpoint: '/spatial/bbox',
     method: 'GET'
@@ -90,7 +104,8 @@ export const tools = [
     description: `Get features from a specific data layer within a bounding box. Use this tool when you need data from one specific source (e.g., just flood zones, or just wetlands) rather than all sources at once.`,
     parameters: {
       layerName: z.string().describe('The layer identifier (e.g., "flood_zones", "wetlands", "dem_elevation", "nlcd_land_cover", "contours", "building_footprints", "stream_gauges", "tide_stations", "weather_alerts", "air_quality")'),
-      bbox: z.string().describe('Bounding box as "west,south,east,north" in WGS84 coordinates')
+      bbox: z.string().describe('Bounding box as "west,south,east,north" in WGS84 coordinates'),
+      geometry: z.enum(['none', 'simplified', 'full']).optional().describe('Geometry detail: "none" strips coordinates (smallest response), "simplified" reduces density, "full" returns complete geometry. Default: full.')
     },
     endpoint: '/layers/{layerName}/features',
     method: 'GET'
