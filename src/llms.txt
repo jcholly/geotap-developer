@@ -1,0 +1,102 @@
+# GeoTap API
+
+> Access 37 US federal environmental and infrastructure data sources through a single API.
+
+GeoTap aggregates real-time data from FEMA, USGS, EPA, NOAA, USDA/NRCS, USFWS, USACE, DOT, and Census Bureau into a unified REST API and MCP server for AI tools.
+
+## Quick Start
+
+For any US address or coordinate, start with:
+- `GET /api/v1/query-address?address=123+Main+St,+Houston+TX` — geocode + environmental lookup in one call
+- `GET /api/v1/spatial/point?lat=29.76&lng=-95.36&layers=flood_zones,wetlands` — point query with specific layers
+
+## API Base URL
+
+https://geotapdata.com/api/v1
+
+## Authentication
+
+Include `X-API-Key` header. Get a key at https://geotapdata.com (free tier: 50 requests/month).
+
+## MCP Server
+
+Install: `npx geotap-mcp-server`
+npm: https://www.npmjs.com/package/geotap-mcp-server
+
+## Core Endpoints
+
+### Location Lookup (start here)
+- `GET /query-address` — Address lookup + environmental data (flood zones, wetlands, soils, contamination, habitat)
+- `GET /spatial/point` — Same as above with lat/lng coordinates
+- `GET /geocode` — Address to coordinates only
+
+### Spatial Queries
+- `POST /spatial/in-polygon` — Query area with GeoJSON polygon (accepts lat/lng for auto-bbox)
+- `GET /spatial/near` — Query radius around a point
+- `GET /spatial/bbox` — Query bounding box
+- `POST /spatial/summary` — Feature counts only (fast, small response)
+
+### Rainfall (NOAA Atlas 14)
+- `GET /rainfall/atlas14` — Precipitation frequency estimates
+- `GET /rainfall/atlas14/idf` — IDF curves
+- `POST /rainfall/hyetograph` — Design storm hyetograph
+- `GET /rainfall/recommend` — Recommended SCS distribution for location
+- `POST /rainfall/climate/project` — Climate change projections
+
+### Watershed & Hydrology
+- `POST /watershed/delineate` — Delineate watershed from pour point
+- `GET /watershed/characteristics` — Basin characteristics
+- `GET /watershed/flow-statistics` — Peak/low flow estimates
+- `POST /hydrology/analyze` — Full hydrologic analysis (CN, Tc, peak Q)
+
+### Curve Numbers
+- `GET /cn/lookup` — Single CN by land use + soil type
+- `POST /cn/analyze` — Weighted CN for polygon using NLCD + SSURGO
+
+### Water Quality (EPA ATTAINS)
+- `POST /water-quality/receiving-water` — Impairments + receiving water
+- `GET /water-quality/impairments` — Quick lookup by HUC-12
+
+### Elevation (USGS 3DEP)
+- `GET /spatial/dem-stats` — Elevation statistics for bbox
+- `GET /spatial/contours` — Contour lines
+- `POST /spatial/dem-export` — DEM GeoTIFF export
+
+### Stream Gages (USGS NWIS)
+- `GET /gage-intelligence/{siteId}/summary` — Gage overview
+- `GET /gage-intelligence/{siteId}/flood-frequency` — Bulletin 17C analysis
+- `GET /gage-intelligence/{siteId}/flow-duration` — Flow duration curve
+- `GET /gage-intelligence/{siteId}/storm-events` — Detected storm events
+
+### Site Analysis
+- `POST /site-analysis/report` — Comprehensive environmental assessment
+- `POST /constraints/report` — Constraint mapping + developable area
+- `POST /site-developability/report` — Developability scoring (0-100)
+
+### Export
+- `POST /export` — GeoJSON, Shapefile, CSV, KML, GeoPackage
+- `GET /export/{jobId}` — Check export status
+
+## Data Sources
+
+| Agency | Data |
+|--------|------|
+| FEMA | Flood zones, FIRM panels |
+| USGS | Elevation (3DEP), land cover (NLCD), hydrography (NHD), stream gages (NWIS) |
+| EPA | Water quality (ATTAINS), Superfund, brownfields, TRI, NPDES |
+| NOAA | Rainfall (Atlas 14), climate projections (CMIP6), tide/weather stations |
+| USDA/NRCS | Soils (SSURGO), curve numbers (TR-55) |
+| USFWS | Wetlands (NWI), critical habitat, endangered species |
+| USACE | Waterway permits (Section 404) |
+| DOT | National Bridge Inventory |
+| Census | Demographics, TIGER boundaries, geocoding |
+
+## Tips for AI Agents
+
+1. **Start with `query_address`** — handles 90% of location-based questions in one call
+2. **Always set `geometry="none"`** on spatial queries unless coordinates are specifically needed
+3. **Specify layers** — querying all 37 layers returns huge responses; pick what you need
+4. **Use lat/lng** — POST endpoints accept flat `lat` + `lng` params, auto-converted to GeoJSON
+5. **Poll async jobs** — site analysis, constraints, and exports return jobIds; poll the status endpoint
+6. **Check `_summary`** — every response includes a plain-English summary in `_summary`
+7. **Check `_meta.sources`** — cite the federal agency, not just "GeoTap"
