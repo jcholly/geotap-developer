@@ -192,4 +192,8 @@ export const toolSources = {
   get_huc_watershed_by_code: src(AGENCIES.USGS, 'wbd'),
   export_satellite_imagery: [...src(AGENCIES.USDA, 'naip'), { agency: 'USGS', dataset: 'Aerial Photography', url: 'https://www.usgs.gov/programs/national-geospatial-program/national-map' }],
   get_satellite_resolution_options: [...src(AGENCIES.USDA, 'naip')],
+
+  // ── Meta Tools ──
+  discover_tools: [{ agency: 'GeoTap', dataset: 'Tool Discovery', url: 'https://geotapdata.com' }],
+  get_llms_txt: [{ agency: 'GeoTap', dataset: 'API Documentation', url: 'https://geotapdata.com/llms.txt' }],
 };
