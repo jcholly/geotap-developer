@@ -25,12 +25,12 @@ const legacyToolMap = new Map(tools.map(t => [t.name, t]));
 const server = new McpServer({
   name: 'geotap',
   version: '2.0.0',
-  description: 'Access 71 US federal environmental and infrastructure data layers from 64+ agencies. Query flood zones, wetlands, soils, rainfall, watersheds, water quality, endangered species, elevation, land use, hazards, energy, infrastructure, transportation, and more for any location in the United States.',
+  description: 'Access US federal environmental and infrastructure data layers from 64+ agencies. Query flood zones, wetlands, soils, rainfall, watersheds, water quality, endangered species, elevation, land use, hazards, energy, infrastructure, transportation, and more for any location in the United States.',
   instructions: useLegacyTools
     ? `You have access to GeoTap with 85 individual tools. Use discover_tools to find the right one.`
     : `You have access to GeoTap, which provides real-time data from 37 US federal agencies (FEMA, USGS, NOAA, EPA, NRCS, USFWS, USACE, and more).
 
-TOOL OVERVIEW (12 tools + 2 meta-tools):
+TOOL OVERVIEW (16 tools + 2 meta-tools):
 1. query_location — Start here. Query environmental data by address, coordinates, bbox, polygon, or radius.
 2. get_rainfall — NOAA Atlas 14 precipitation, IDF curves, hyetographs, climate projections.
 3. get_watershed — Watershed delineation, flow statistics, flowlines, HUC boundaries, FIRM panels.
@@ -40,9 +40,13 @@ TOOL OVERVIEW (12 tools + 2 meta-tools):
 7. analyze_gage — USGS stream gage analysis: flood frequency, flow duration, storm events.
 8. estimate_ungaged — Flow estimation at ungaged sites: regression, similarity, transfer methods.
 9. generate_report — Site analysis, constraints, and developability reports with scoring.
-10. export_data — Export layers to GeoJSON, Shapefile, KML, CSV, GeoPackage.
+10. export_data — Export layers to GeoJSON, Shapefile, CSV.
 11. find_stations — Find monitoring stations (USGS, NOAA) and analyze waterway permit requirements.
 12. check_status — API health and federal data source connectivity.
+13. get_hazards — FEMA risk index, seismic design values, wildfires, landslides, coastal vulnerability, flood insurance claims, social vulnerability.
+14. get_energy — Solar resource, PVWatts production estimates, utility rates, EV charging stations.
+15. get_infrastructure — Hospitals, fire stations, schools, power plants, airports, railroad crossings, bridges, historic places.
+16. get_ecology — Species occurrences, essential fish habitat.
 
 Every tool uses an "action" parameter to select the specific operation. Read the tool description to see available actions.
 
