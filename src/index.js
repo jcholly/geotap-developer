@@ -70,7 +70,8 @@ IMPORTANT:
 - All data from authoritative US federal sources. Always cite the source agency.
 - Responses include _summary with plain-English descriptions — use these in answers.
 - Data is for informational purposes. Remind users to verify for engineering/regulatory decisions.
-- Coordinates must be within the United States (including territories).`
+- Coordinates must be within the United States (including territories).
+- API key required. Users can get a free key at https://geotapdata.com/developers (one-click signup).`
 });
 
 // ── Shared tool call handler ────────────────────────────────────────

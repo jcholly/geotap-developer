@@ -1,6 +1,6 @@
 # GeoTap API
 
-> Access 37 US federal environmental and infrastructure data sources through a single API.
+> Access 71 US federal environmental and infrastructure data layers through a single API.
 
 GeoTap aggregates real-time data from FEMA, USGS, EPA, NOAA, USDA/NRCS, USFWS, USACE, DOT, and Census Bureau into a unified REST API and MCP server for AI tools.
 
@@ -16,7 +16,7 @@ https://geotapdata.com/api/v1
 
 ## Authentication
 
-Include `X-API-Key` header. Get a key at https://geotapdata.com (free tier: 50 requests/month).
+Include `X-API-Key` header. Get a free API key at https://geotapdata.com/developers (one-click signup).
 
 ## MCP Server
 
