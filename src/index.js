@@ -25,7 +25,7 @@ const legacyToolMap = new Map(tools.map(t => [t.name, t]));
 const server = new McpServer({
   name: 'geotap',
   version: '2.0.0',
-  description: 'Access 37 US federal environmental and infrastructure data sources. Query flood zones, wetlands, soils, rainfall, watersheds, water quality, endangered species, elevation, land use, and more for any location in the United States.',
+  description: 'Access 71 US federal environmental and infrastructure data layers from 64+ agencies. Query flood zones, wetlands, soils, rainfall, watersheds, water quality, endangered species, elevation, land use, hazards, energy, infrastructure, transportation, and more for any location in the United States.',
   instructions: useLegacyTools
     ? `You have access to GeoTap with 85 individual tools. Use discover_tools to find the right one.`
     : `You have access to GeoTap, which provides real-time data from 37 US federal agencies (FEMA, USGS, NOAA, EPA, NRCS, USFWS, USACE, and more).
