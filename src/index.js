@@ -3,7 +3,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
-import { callApi, StructuredApiError } from './api.js';
+import { callApi, StructuredApiError, requireApiKey } from './api.js';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -258,6 +258,14 @@ server.tool(
     }
   }
 );
+
+// Require API key before starting
+try {
+  requireApiKey();
+} catch (err) {
+  console.error(`[geotap] ERROR: ${err.message}`);
+  process.exit(1);
+}
 
 console.error(`[geotap] v3.0.0 — 2 tools (collect_site_data, get_results) + 1 meta-tool (get_llms_txt)`);
 

@@ -2,6 +2,25 @@ const BASE_URL = process.env.GEOTAP_API_URL || 'https://geotapdata.com/api/v1';
 const API_KEY = process.env.GEOTAP_API_KEY || '';
 
 /**
+ * Validate that an API key is configured.
+ * Throws a descriptive error if missing — the MCP server requires a key.
+ */
+export function requireApiKey() {
+  if (!API_KEY) {
+    throw new Error(
+      'GEOTAP_API_KEY is required.\n\n' +
+      '1. Register for a free API key:\n' +
+      '   curl -X POST https://geotapdata.com/api/keys/register \\\n' +
+      '     -H "Content-Type: application/json" \\\n' +
+      '     -d \'{"email": "you@example.com"}\'\n\n' +
+      '2. Add it to your MCP config:\n' +
+      '   "env": { "GEOTAP_API_KEY": "your-key-here" }\n\n' +
+      'See https://github.com/jcholly/geotap-developer for setup instructions.'
+    );
+  }
+}
+
+/**
  * Structured API Error with fix instructions for LLMs.
  */
 export class StructuredApiError extends Error {
@@ -105,9 +124,7 @@ export async function callApi(endpoint, method, params) {
     'User-Agent': 'geotap-mcp-server/2.2.1'
   };
 
-  if (API_KEY) {
-    headers['X-API-Key'] = API_KEY;
-  }
+  headers['X-API-Key'] = API_KEY;
 
   // Substitute path parameters like {siteId} with values from params
   let resolvedEndpoint = endpoint;
