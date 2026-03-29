@@ -159,18 +159,20 @@ The server communicates over **stdio** — point your MCP client to the `geotap-
 
 ### Step 3: Start Asking Questions
 
-Once connected, just ask your AI assistant about any US location:
+Once connected, ask your AI assistant to pull data for any US site. GeoTap collects from all 80+ federal sources at once — just give it a location and then ask whatever you want:
 
-- *"What are the flood zones at 123 Main St, Austin TX?"*
-- *"Is this property in a wetland?"*
-- *"What soil types are on this site?"*
-- *"What's the 100-year rainfall for Dallas?"*
-- *"Delineate the watershed at this point"*
-- *"Are there any EPA Superfund sites near here?"*
-- *"What's the curve number for this drainage area?"*
-- *"Run a full environmental site analysis for this parcel"*
-- *"What permits do I need to build near this stream?"*
-- *"Generate a design storm hyetograph for a 25-year, 24-hour event"*
+```
+"Collect site data for 123 Main St, Austin TX"
+```
+
+Once the data comes back (~60-120 seconds), you can ask follow-up questions like:
+
+- *"Is this site in a flood zone?"*
+- *"What soil types are here and what's the curve number?"*
+- *"Are there any contamination concerns nearby?"*
+- *"What's the 100-year rainfall?"*
+- *"What permits would I need to develop this site?"*
+- *"Summarize the key environmental risks"*
 
 ### Troubleshooting
 
@@ -179,7 +181,7 @@ Once connected, just ask your AI assistant about any US location:
 | Server won't start / "GEOTAP_API_KEY is required" | Make sure your API key is set in the `env` block of your MCP config |
 | "npx: command not found" | Install [Node.js](https://nodejs.org/) (v18+), which includes npx |
 | Tools don't appear in Claude Desktop | Restart Claude Desktop completely (quit + reopen, not just close the window) |
-| Rate limit errors | Free tier allows 50 requests/month. Upgrade tiers coming soon |
+| Rate limit errors | Wait a moment and retry — burst limits are per-minute |
 
 ---
 
@@ -209,15 +211,6 @@ Every response includes **source attribution** — the federal agency, dataset n
 |----------|-------------|----------|
 | `GEOTAP_API_KEY` | Your API key from registration | **Yes** |
 | `GEOTAP_API_URL` | Custom API endpoint (advanced) | No |
-
-### Rate Limits
-
-| Tier | Monthly Requests | Burst (per min) | Cost |
-|------|-----------------|------------------|------|
-| **Free** | 50 | 5/min | Free |
-| **Starter** | 1,000 | 20/min | Coming soon |
-| **Pro** | 10,000 | 60/min | Coming soon |
-| **Enterprise** | 100,000 | 200/min | Coming soon |
 
 ---
 
