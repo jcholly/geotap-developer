@@ -1,7 +1,7 @@
 {
   "name": "geotap-mcp-server",
-  "version": "2.2.1",
-  "description": "MCP server for GeoTap — access 37 US federal environmental and infrastructure data sources from Claude, Cursor, and other AI tools",
+  "version": "3.0.0",
+  "description": "MCP server for GeoTap — collect comprehensive environmental data from 80+ US federal sources for any site. One tool, all the data.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
