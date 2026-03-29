@@ -37,26 +37,42 @@ DATA INCLUDES:
 - Protected lands (PAD-US), wild & scenic rivers, sole source aquifers
 
 HOW TO PRESENT RESULTS:
-When you receive completed data, organize your response using these sections (skip sections with no data):
+The goal is a scannable engineering document, not a data dump. An engineer doing site due diligence needs to answer three questions fast:
+1. What kills the project? (floodway, contamination, protected species)
+2. What complicates permitting? (wetlands, impaired waters, high slopes, poor soils)
+3. What's the baseline context? (rainfall IDF, seismic params, demographics, infrastructure)
 
-1. **Site Overview** — Location, area, county, state, elevation range, land cover
-2. **Environmental Constraints** — Flood zones, wetlands, soils (drainage class, hydrologic group), impaired waters, critical habitat. Flag any development constraints.
-3. **Contamination & Regulated Sites** — Superfund, brownfields, USTs, NPDES, EPA-regulated facilities within the search radius. Include distances and directions.
-4. **Water Resources** — Streams, watershed (HUC), water quality stations, groundwater wells, Atlas 14 rainfall (cite 2yr/10yr/100yr 24-hour depths).
-5. **Natural Hazards** — Flood risk (FEMA zones), seismic design values, NRI risk index, earthquake history, landslide susceptibility, wildfire history.
-6. **Infrastructure & Services** — Nearby hospitals, fire stations, schools, EMS, dams, airports, bridges. Include counts and distances.
-7. **Demographics & Energy** — Population, median income, housing, solar potential, utility rates.
-8. **Key Findings & Considerations** — Summarize the most important findings. Highlight anything that would affect site development, permitting, or engineering design.
+CRITICAL FLAGS — scan results and lead with these if present:
+- Any FEMA zone AE/AO/VE (SFHA): "Site intersects SFHA — Zone [X]" (CRITICAL)
+- Any floodway: "Regulatory floodway — no-rise certification required" (CRITICAL)
+- Superfund site nearby: "NPL Superfund site within search radius" (CRITICAL)
+- Wetland count > 10: "High wetland density — Section 404 permitting likely" (HIGH)
+- 303(d) impaired water (Category 5): "TMDL required, stricter discharge limits" (HIGH)
+- Brownfields > 3: "Phase I ESA recommended" (MODERATE)
+- Soils with HSG D: "Poorly draining soils — stormwater design impact" (MODERATE)
+
+SECTION ORDER (skip sections with no data):
+1. Site overview — address, coordinates, county, elevation (min/max/mean), land cover, area
+2. FEMA flood zones — table with zone, subtype, SFHA status, risk level
+3. Soils — one block per soil unit: HSG, drainage class, slope, flood frequency, limitations
+4. Atlas 14 rainfall — IDF table (rows: 15min, 1hr, 6hr, 12hr, **24hr bold**, 3day; cols: 2yr, 5yr, 10yr, 25yr, 50yr, 100yr). Include Atlas 14 volume/version.
+5. Natural hazard risk — NRI ratings by hazard type (overall, flooding, tornado, earthquake, etc.)
+6. Wetlands — count, type breakdown, Section 404 permitting note
+7. Water resources — streams (with distances), impaired waters (category), watershed HUC
+8. Contamination — Superfund, brownfields (with distances/status), USTs, NPDES outfalls
+9. Seismic & dams — ASCE 7-22 params (SDS, SD1, SDC, PGA), nearby dams with hazard rating
+10. Infrastructure — hospitals, fire stations, schools, EMS counts with distances
+11. Solar & energy — DNI, GHI, capacity factor, utility rates
+12. Demographics — population, median income, vacancy rate (from Census ACS)
 
 FORMATTING RULES:
-- Use markdown tables for structured data (flood zones, soils, nearby facilities)
-- Bold key values and findings that matter most
-- Always cite the source agency for each data point (e.g., "FEMA NFHL", "NRCS SSURGO", "NOAA Atlas 14")
-- Include distances and cardinal directions for nearby features (e.g., "0.8 miles NW")
-- For Atlas 14 rainfall, present as a compact table: return period × duration
-- For soils, include drainage class and hydrologic soil group — these drive stormwater design
-- Note when a data source was queried but returned no data ("_noData: true") — this is informative (e.g., no Superfund sites nearby is good news)
-- End with a disclaimer: "Data sourced from US federal agencies via GeoTap. Verify critical findings against authoritative sources before making engineering or regulatory decisions."
+- Use markdown tables for flood zones, rainfall IDF, brownfields, soils
+- Bold the 24-hr row in rainfall tables — it's the most referenced for stormwater design
+- For soils, always include HSG and drainage class — these drive CN calculations
+- Include distances and cardinal directions for nearby features (e.g., "0.8 mi NW")
+- When a source returned no data ("_noData"), mention it where relevant ("no Superfund sites" is positive)
+- Cite source agencies (FEMA, NRCS, NOAA Atlas 14, EPA), not just "GeoTap"
+- End with disclaimer: "Data sourced from US federal agencies via GeoTap. Verify critical findings against authoritative sources before making engineering or regulatory decisions."
 
 IMPORTANT:
 - All data from authoritative US federal sources. Always cite the source agency, not just "GeoTap."
@@ -179,23 +195,27 @@ server.tool(
           disclaimer: 'Data sourced from US federal agencies via GeoTap. Always verify critical data against authoritative sources before making engineering or regulatory decisions.',
         };
         response._presentationGuide = {
-          instructions: 'Present these results to the user in a well-organized report. Follow the formatting instructions in the server description (HOW TO PRESENT RESULTS section).',
-          sections: [
-            'Site Overview (location, area, elevation, land cover)',
-            'Environmental Constraints (flood zones, wetlands, soils, impaired waters)',
-            'Contamination & Regulated Sites (Superfund, brownfields, USTs, NPDES — with distances)',
-            'Water Resources (streams, watershed, water quality, rainfall IDF data)',
-            'Natural Hazards (flood risk, seismic, NRI, earthquakes, wildfires)',
-            'Infrastructure & Services (hospitals, fire stations, schools, dams, bridges)',
-            'Demographics & Energy (Census ACS, solar potential, utility rates)',
-            'Key Findings & Considerations (summarize what matters most for this site)',
+          instructions: 'Present as a scannable engineering document. Lead with critical flags, then structured sections. Follow the HOW TO PRESENT RESULTS instructions.',
+          priorityOrder: [
+            '1. Critical flags (floodway, SFHA, Superfund, high wetland density)',
+            '2. FEMA flood zones (table: zone, subtype, SFHA, risk)',
+            '3. Soils (HSG, drainage class, slope, limitations)',
+            '4. Atlas 14 rainfall (IDF table — bold 24hr row)',
+            '5. NRI hazard risk (badge grid by hazard type)',
+            '6. Wetlands (count, types, Section 404 note)',
+            '7. Water resources (streams, impaired waters with distances)',
+            '8. Contamination (Superfund, brownfields, USTs with distances)',
+            '9. Seismic & dams (ASCE 7-22 params, nearby dams)',
+            '10. Infrastructure (hospitals, fire, schools, EMS counts)',
+            '11. Solar/energy & demographics (collapsed/secondary)',
           ],
           tips: [
-            'Use markdown tables for structured comparisons',
-            'Bold the most critical findings (e.g., site is in a FEMA AE flood zone)',
-            'Cite source agencies, not just GeoTap',
-            'Mention when sources returned no data — "no Superfund sites" is useful info',
-            'End with the disclaimer from _meta',
+            'Lead with what kills or complicates the project — not context',
+            'Use tables for flood zones, rainfall IDF, brownfields, soils',
+            'Bold the 24-hr rainfall row — most referenced for stormwater design',
+            'For soils, always show HSG and drainage class (drives CN calculation)',
+            'Cite source agencies (FEMA, NRCS, NOAA Atlas 14, EPA)',
+            '"No Superfund sites nearby" is positive — mention it',
           ]
         };
       } else {
