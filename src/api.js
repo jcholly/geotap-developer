@@ -102,7 +102,7 @@ function buildStructuredError(status, errorText, endpoint, method, params) {
 export async function callApi(endpoint, method, params) {
   const headers = {
     'Content-Type': 'application/json',
-    'User-Agent': 'geotap-mcp-server/1.0.0'
+    'User-Agent': 'geotap-mcp-server/2.2.1'
   };
 
   if (API_KEY) {

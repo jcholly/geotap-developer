@@ -449,7 +449,7 @@ curl -X POST "https://geotapdata.com/api/v1/export" \
 
 ## MCP Server
 
-The MCP (Model Context Protocol) server wraps the REST API into **83 AI-native tools** that Claude, Cursor, Windsurf, and other AI assistants can call directly.
+The MCP (Model Context Protocol) server wraps the REST API into **16 consolidated tools** (or 109 legacy tools) that Claude, Cursor, Windsurf, and other AI assistants can call directly.
 
 ### Installation
 
@@ -529,7 +529,7 @@ With API key:
 - *"What permits do I need to build near this stream?"*
 - *"Export this data as a shapefile"*
 
-### Available Tools (85)
+### Available Tools (109 legacy / 16 consolidated)
 
 **Core tools (start here):**
 - **query_address** — Geocode + environmental query in one call. Returns properties with plain-English interpretations. (<5KB response)
