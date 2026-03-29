@@ -1,6 +1,6 @@
 {
   "name": "geotap-mcp-server",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "MCP server for GeoTap — collect comprehensive environmental data from 80+ US federal sources for any site. One tool, all the data.",
   "type": "module",
   "main": "src/index.js",
