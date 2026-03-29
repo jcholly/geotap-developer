@@ -13,80 +13,153 @@ GeoTap aggregates data from FEMA, USGS, EPA, NOAA, USDA, USFWS, DOT, Census, and
 
 ## Getting Started
 
-### 1. Register for a Free API Key
+### Prerequisites
+
+- **Node.js** (v18 or later) — [download here](https://nodejs.org/)
+- An email address to register for your API key
+
+### Step 1: Get Your API Key
+
+Go to **[geotapdata.com/developers](https://geotapdata.com/developers)** and register with your email to get a free API key.
+
+Your API key will be sent to your email. **Save it** — you'll need it in the next step.
+
+### Step 2: Set Up the MCP Server
+
+Choose your AI tool below and follow the instructions. The MCP server is installed automatically via `npx` — no manual download needed.
+
+---
+
+<details open>
+<summary><strong>Claude Desktop</strong></summary>
+
+1. Open Claude Desktop
+2. Go to **Settings** (gear icon) → **Developer** → **Edit Config**
+3. This opens your `claude_desktop_config.json` file. Add the following (replace `your-api-key-here` with your actual key):
+
+```json
+{
+  "mcpServers": {
+    "geotap": {
+      "command": "npx",
+      "args": ["-y", "geotap-mcp-server"],
+      "env": {
+        "GEOTAP_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+> **Config file location:**
+> - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+> - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+4. **Restart Claude Desktop** completely (quit and reopen)
+5. You should see a hammer icon (🔨) in the chat input — that means GeoTap is connected
+
+</details>
+
+---
+
+<details>
+<summary><strong>Claude Code (CLI)</strong></summary>
+
+Run this command to add GeoTap to your Claude Code MCP servers:
 
 ```bash
-curl -X POST https://geotapdata.com/api/keys/register \
-  -H "Content-Type: application/json" \
-  -d '{"email": "you@example.com"}'
+claude mcp add geotap -- npx -y geotap-mcp-server
 ```
 
-You'll receive your API key by email. An API key is **required** to use the MCP server.
-
-### 2. Install the MCP Server
-
-#### Claude Desktop
-
-Add to your `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "geotap": {
-      "command": "npx",
-      "args": ["-y", "geotap-mcp-server"],
-      "env": {
-        "GEOTAP_API_KEY": "your-api-key-here"
-      }
-    }
-  }
-}
-```
-
-#### Claude Code
-
-Add to your MCP settings:
-
-```json
-{
-  "mcpServers": {
-    "geotap": {
-      "command": "npx",
-      "args": ["-y", "geotap-mcp-server"],
-      "env": {
-        "GEOTAP_API_KEY": "your-api-key-here"
-      }
-    }
-  }
-}
-```
-
-#### Cursor
-
-Add to your Cursor MCP settings:
-
-```json
-{
-  "mcpServers": {
-    "geotap": {
-      "command": "npx",
-      "args": ["-y", "geotap-mcp-server"],
-      "env": {
-        "GEOTAP_API_KEY": "your-api-key-here"
-      }
-    }
-  }
-}
-```
-
-#### Windsurf / Other MCP Clients
+Then set your API key as an environment variable. Add this to your shell profile (`~/.zshrc`, `~/.bashrc`, etc.):
 
 ```bash
+export GEOTAP_API_KEY="your-api-key-here"
+```
+
+Restart your terminal, then start Claude Code. GeoTap tools will be available automatically.
+
+</details>
+
+---
+
+<details>
+<summary><strong>Cursor</strong></summary>
+
+1. Open Cursor
+2. Go to **Settings** (⌘ + , on Mac, Ctrl + , on Windows) → search for **"MCP"**
+3. Click **"Edit in settings.json"** or add to your `.cursor/mcp.json` file:
+
+```json
+{
+  "mcpServers": {
+    "geotap": {
+      "command": "npx",
+      "args": ["-y", "geotap-mcp-server"],
+      "env": {
+        "GEOTAP_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+4. Restart Cursor
+5. Open the AI chat panel — GeoTap tools will appear in the available tools list
+
+</details>
+
+---
+
+<details>
+<summary><strong>Windsurf</strong></summary>
+
+1. Open Windsurf
+2. Go to **Settings** → **MCP Servers** (or edit `~/.codeium/windsurf/mcp_config.json` directly)
+3. Add:
+
+```json
+{
+  "mcpServers": {
+    "geotap": {
+      "command": "npx",
+      "args": ["-y", "geotap-mcp-server"],
+      "env": {
+        "GEOTAP_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+4. Restart Windsurf
+
+</details>
+
+---
+
+<details>
+<summary><strong>Other MCP-Compatible Clients</strong></summary>
+
+For any MCP client, the server can be run directly:
+
+```bash
+# Install globally
 npm install -g geotap-mcp-server
+
+# Run with your API key
 GEOTAP_API_KEY=your-api-key-here geotap-mcp
 ```
 
-### 3. Start Asking Questions
+The server communicates over **stdio** — point your MCP client to the `geotap-mcp` command with the `GEOTAP_API_KEY` environment variable set.
+
+</details>
+
+---
+
+### Step 3: Start Asking Questions
+
+Once connected, just ask your AI assistant about any US location:
 
 - *"What are the flood zones at 123 Main St, Austin TX?"*
 - *"Is this property in a wetland?"*
@@ -98,6 +171,15 @@ GEOTAP_API_KEY=your-api-key-here geotap-mcp
 - *"Run a full environmental site analysis for this parcel"*
 - *"What permits do I need to build near this stream?"*
 - *"Generate a design storm hyetograph for a 25-year, 24-hour event"*
+
+### Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Server won't start / "GEOTAP_API_KEY is required" | Make sure your API key is set in the `env` block of your MCP config |
+| "npx: command not found" | Install [Node.js](https://nodejs.org/) (v18+), which includes npx |
+| Tools don't appear in Claude Desktop | Restart Claude Desktop completely (quit + reopen, not just close the window) |
+| Rate limit errors | Free tier allows 50 requests/month. Upgrade tiers coming soon |
 
 ---
 
