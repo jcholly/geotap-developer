@@ -177,7 +177,38 @@ Data returned covers: flood zones, wetlands, soils, geology, contamination sites
 
 server.tool(
   'get_results',
-  `Check the status of a data collection job and retrieve results. Poll every 10 seconds until status is "completed". When complete, returns the full data summary from all 80+ federal sources. Present the results to the user following the formatting instructions in the server description.`,
+  `Check the status of a data collection job and retrieve results. Poll every 10 seconds until status is "completed".
+
+When complete, present results as a SCANNABLE ENGINEERING DOCUMENT — not a data dump. An engineer needs to answer: (1) What kills the project? (2) What complicates permitting? (3) What's the baseline context?
+
+CRITICAL FLAGS — scan results FIRST and lead with these if present:
+- FEMA Zone AE/AO/VE or SFHA=true → "Site intersects SFHA — Zone [X]" (CRITICAL)
+- Floodway present → "Regulatory floodway — no-rise certification required" (CRITICAL)
+- Superfund count > 0 → "NPL Superfund site within search radius" (CRITICAL)
+- Wetland count > 10 → "High wetland density — Section 404 permitting likely" (HIGH)
+- 303(d) impaired water → "TMDL required, stricter discharge limits" (HIGH)
+- Brownfields > 3 → "Phase I ESA recommended" (MODERATE)
+- Soils with HSG D → "Poorly draining soils — stormwater design impact" (MODERATE)
+
+SECTION ORDER (skip sections with no data):
+1. Site overview — address, coordinates, county, elevation range, land cover, area
+2. FEMA flood zones — table: zone | subtype | SFHA | risk level
+3. Soils — per unit: HSG, drainage class, slope, flood frequency, building/septic limitations
+4. Atlas 14 rainfall — IDF table (rows: 15min, 1hr, 6hr, 12hr, **24hr**, 3day; cols: 2yr–100yr). **Bold the 24hr row.** Include Atlas 14 volume.
+5. Natural hazard risk — NRI ratings by hazard type
+6. Wetlands — count, type breakdown, Section 404 note
+7. Water resources — streams with distances, impaired waters
+8. Contamination — Superfund, brownfields (with distances/status), USTs, NPDES
+9. Seismic & dams — ASCE 7-22 params (SDS, SD1, SDC), nearby dams with hazard rating
+10. Infrastructure — hospitals, fire stations, schools, EMS counts
+11. Demographics — population, median income, vacancy rate
+
+FORMATTING:
+- Use markdown tables for flood zones, rainfall IDF, soils, brownfields
+- Cite source agencies (FEMA, NRCS, NOAA Atlas 14, EPA) not just "GeoTap"
+- Include distances and bearings for nearby features (e.g., "0.8 mi NW")
+- "_noData: true" means queried but nothing found — mention where relevant ("no Superfund sites" is positive)
+- End with: "Data sourced from US federal agencies via GeoTap. Verify critical findings before engineering or regulatory decisions."`,
   {
     jobId: z.string().describe('Job ID returned from collect_site_data'),
   },
